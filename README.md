@@ -34,7 +34,8 @@ yarn
 
 ```bash
 # development
-$ yarn start
+$ yarn
+$ yarn run start
 
 # watch mode
 $ yarn start:dev
