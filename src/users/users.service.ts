@@ -22,6 +22,7 @@ export class UserService {
     const newUser = await this.userModel.create(createUserDto);
     if (createUserDto.password)
       newUser.password = await bcrypt.hash(newUser.password, 10);
+    console.log(newUser);
     return newUser.save();
   }
 
