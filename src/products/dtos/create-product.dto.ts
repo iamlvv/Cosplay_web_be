@@ -8,6 +8,7 @@ export class CreateProductDTO {
   price: number;
   oldPrice: number;
   category_slug: string;
+  subcategory?: string[];
   quantity: number;
   imageUrl: string;
   variations: Variation;

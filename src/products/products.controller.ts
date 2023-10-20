@@ -26,8 +26,17 @@ export class ProductController {
 
   private readonly logger = new Logger('Product Controller');
 
+  @Get('subcategoryof')
+  async getSubcategories(@Query('category') category: string){
+    return this.productService.getSubCategory(category);
+
+    // return `Testing on PORT:::${process.env.PORT} 🚀`;
+  }
+
+
   @Get('/')
   async getProducts(@Query() filterProductDto: FilterProductDTO) {
+    
     if (
       !filterProductDto.text &&
       !filterProductDto.category &&
@@ -45,6 +54,8 @@ export class ProductController {
 
     return filterProducts;
   }
+
+
 
   @Get('popular-products')
   async getPopularProducts(@Query() filterProductDto: FilterProductDTO) {
@@ -74,8 +85,8 @@ export class ProductController {
     return newProduct;
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.Merchant, Role.Admin)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles(Role.Merchant, Role.Admin)
   @Put('/:id')
   async updateProduct(
     @Param('id') id: string,

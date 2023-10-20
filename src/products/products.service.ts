@@ -17,9 +17,32 @@ export class ProductService {
 
   private readonly logger = new Logger('Product Service');
 
+  async getSubCategory(category: string){
+    if(category === 'van-hoc'){  //for old code and testing
+      return ["duong-dai","co-dien","nuoc-ngoai"];
+    }
+    else if(category === 'le-hoi'){
+      return ["Halloween", "Giáng sinh", "Tết nguyên đán", "Tết trung thu"];
+    }
+    else if(category === 'su-kien'){
+      return ["Tiệc sinh nhật", "Tiệc công ty", "Hội nghị"];
+    }
+    else if(category === 'hoa-trang'){
+      return ["Mushoku Tensei", "JUJUTSU KAISEN", "Bungo Stray Dogs", "Undead Murder Farce", "Sugar Apple Fairy Tale", "BLEACH", "Naruto"];
+    }
+    else if(category === 'nghe-thuat'){
+      return ["Biểu diễn văn nghệ", "Chụp ảnh ngoại cảnh", "Chụp kỷ yếu"];
+    }
+    else{
+      return "Undefined Category!";
+    }
+  }
+
+
   async getFilteredProducts({
     text,
     category,
+    subcategory,
     page = 1,
     limit = 20,
     orderBy,
@@ -34,8 +57,9 @@ export class ProductService {
             _id: -1,
           };
 
+          console.log(category);
     const categoryList = category?.split(',');
-
+    const subcategoryList = subcategory?.split(',');
     let priceRange = null;
     if (price && price.split(',').length === 2) {
       priceRange = price.split(',').map((p) => +p * 1000);
@@ -45,20 +69,42 @@ export class ProductService {
       const findProps: any = !priceRange
         ? {
             category_slug: { $in: categoryList },
+            
           }
         : {
             $and: [
               {
                 category_slug: { $in: categoryList },
+                
               },
               {
                 price: { $gte: priceRange[0], $lte: priceRange[1] },
               },
+              
             ],
           };
-
+          const findProps2: any = !subcategory
+          ? {
+              category_slug: { $in: categoryList },
+              
+            }
+          : {
+              $and: [
+                {
+                  category_slug: { $in: categoryList },
+                  
+                },
+                {
+                  subcategory: { $in: subcategoryList },
+                },
+                
+              ],
+            };
+      
+      const findPropsCombined = Object.assign({}, findProps, findProps2);
+          
       const products = await this.productModel
-        .find(findProps)
+        .find(findPropsCombined)
         .sort(sortProps)
         .skip((page - 1) * limit)
         .limit(limit)

@@ -37,6 +37,9 @@ export class Product {
   category_slug: string;
 
   @Prop()
+  subcategory?: string;
+
+  @Prop()
   quantity: number;
 
   @Prop()

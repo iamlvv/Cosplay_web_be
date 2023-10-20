@@ -29,10 +29,10 @@ export class AuthController {
     return user;
   }
 
-  // @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Request() req: any) {
-    return this.authService.login(req.body);
+    return this.authService.login(req.user);
   }
 
   @Post('social-login-token')
@@ -45,12 +45,11 @@ export class AuthController {
     return true;
   }
 
-  // @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.User, Role.Merchant)
-  @Post('/me')
+  @Get('/me')
   me(@Request() req: any) {
-    //console.log('req.user.userId:', req.user.userId);
-    return this.authService.me(req.body.userId);
+    return this.authService.me(req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
