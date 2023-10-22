@@ -19,30 +19,70 @@ export class ProductService {
 
   async getSubCategory(category: string){
     if(category === 'van-hoc'){  //for old code and testing
-      return ["duong-dai","co-dien","nuoc-ngoai"];
+      return [
+        { "id": 1, "name": "Đương Đại", "slug": "duong-dai" },
+        { "id": 2, "name": "Cổ Điển", "slug": "co-dien" },
+        { "id": 3, "name": "Nước Ngoài", "slug": "nuoc-ngoai" }
+      ];
     }
     else if(category === 'le-hoi'){
-      return ["Halloween", "Giáng sinh", "Tết nguyên đán", "Tết trung thu"];
+      return [
+        { "id": 1, "name": "Halloween", "slug": "halloween" },
+        { "id": 2, "name": "Giáng sinh", "slug": "giang-sinh" },
+        { "id": 3, "name": "Tết nguyên đán", "slug": "tet-nguyen-dan" },
+        { "id": 4, "name": "Tết trung thu", "slug": "tet-trung-thu" }
+      ];
     }
     else if(category === 'su-kien'){
-      return ["Tiệc sinh nhật", "Tiệc công ty", "Hội nghị"];
+      return [
+        { "id": 1, "name": "Tiệc sinh nhật", "slug": "tiec-sinh-nhat" },
+        { "id": 2, "name": "Tiệc công ty", "slug": "tieu-cong-ty" },
+        { "id": 3, "name": "Hội nghị", "slug": "hoi-nghi" }
+      ];
     }
     else if(category === 'hoa-trang'){
-      return ["Mushoku Tensei", "JUJUTSU KAISEN", "Bungo Stray Dogs", "Undead Murder Farce", "Sugar Apple Fairy Tale", "BLEACH", "Naruto"];
+      return [
+        { "id": 1, "name": "Mushoku Tensei", "slug": "mushoku-tensei" },
+        { "id": 2, "name": "JUJUTSU KAISEN", "slug": "jujutsu-kaisen" },
+        { "id": 3, "name": "Bungo Stray Dogs", "slug": "bungo-stray-dogs" },
+        { "id": 4, "name": "Undead Murder Farce", "slug": "undead-murder-farce" },
+        { "id": 5, "name": "Sugar Apple Fairy Tale", "slug": "sugar-apple-fairy-tale" },
+        { "id": 6, "name": "BLEACH", "slug": "bleach" },
+        { "id": 7, "name": "Naruto", "slug": "naruto" }
+      ];
     }
     else if(category === 'nghe-thuat'){
-      return ["Biểu diễn văn nghệ", "Chụp ảnh ngoại cảnh", "Chụp kỷ yếu"];
+      return [
+        { "id": 1, "name": "Biểu diễn văn nghệ", "slug": "bieu-dien-van-nghe" },
+        { "id": 2, "name": "Chụp ảnh ngoại cảnh", "slug": "chup-anh-ngoai-canh" },
+        { "id": 3, "name": "Chụp kỷ yếu", "slug": "chup-ky-yeu" }
+      ];
+      
     }
     else{
       return "Undefined Category!";
     }
   }
 
+  async getSharedSubCategory(){
+    return [
+      {"id": 1, "name": "Váy", "slug": "vay"},
+      {"id": 2, "name": "Áo", "slug": "quan"},
+      {"id": 3, "name": "Quần", "slug": "quan"},
+      { "id": 4, "name": "Phụ kiện", "slug": "phu-kien" },
+      { "id": 5, "name": "Giày", "slug": "giay" },
+      { "id": 6, "name": "Tóc giả", "slug": "toc-gia" },
+      { "id": 7, "name": "Combo", "slug": "combo" }
+    ];
+    
+    
+  }
 
   async getFilteredProducts({
     text,
     category,
     subcategory,
+    types,
     page = 1,
     limit = 20,
     orderBy,
@@ -60,6 +100,7 @@ export class ProductService {
           console.log(category);
     const categoryList = category?.split(',');
     const subcategoryList = subcategory?.split(',');
+    const typesList = types?.split(',');
     let priceRange = null;
     if (price && price.split(',').length === 2) {
       priceRange = price.split(',').map((p) => +p * 1000);
@@ -100,9 +141,27 @@ export class ProductService {
                 
               ],
             };
+
+            const findProps3: any = !types
+          ? {
+              category_slug: { $in: categoryList },
+              
+            }
+          : {
+              $and: [
+                {
+                  category_slug: { $in: categoryList },
+                  
+                },
+                {
+                  type: { $in: typesList },
+                },
+                
+              ],
+            };
       
-      const findPropsCombined = Object.assign({}, findProps, findProps2);
-          
+      let findPropsCombined = Object.assign({}, findProps, findProps2);
+      findPropsCombined = Object.assign({}, findPropsCombined, findProps3);
       const products = await this.productModel
         .find(findPropsCombined)
         .sort(sortProps)

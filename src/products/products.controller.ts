@@ -32,6 +32,13 @@ export class ProductController {
 
     // return `Testing on PORT:::${process.env.PORT} 🚀`;
   }
+  
+  @Get('sharedSubcategories')
+  async getSubcategories1(@Query('category') category: string){
+    return this.productService.getSharedSubCategory();
+
+    // return `Testing on PORT:::${process.env.PORT} 🚀`;
+  }
 
 
   @Get('/')

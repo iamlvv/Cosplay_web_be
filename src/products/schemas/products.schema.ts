@@ -40,6 +40,9 @@ export class Product {
   subcategory?: string;
 
   @Prop()
+  type?: string;   //example "Ao", "Vay", etc   from sharedSubCategory
+
+  @Prop()
   quantity: number;
 
   @Prop()
