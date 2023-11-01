@@ -48,7 +48,9 @@ export class ProductService {
         { "id": 4, "name": "Undead Murder Farce", "slug": "undead-murder-farce" },
         { "id": 5, "name": "Sugar Apple Fairy Tale", "slug": "sugar-apple-fairy-tale" },
         { "id": 6, "name": "BLEACH", "slug": "bleach" },
-        { "id": 7, "name": "Naruto", "slug": "naruto" }
+        { "id": 7, "name": "Naruto", "slug": "naruto" },
+        { "id": 8, "name": "Genshin Impact", "slug": "genshin-impact" },
+        { "id": 9, "name": "Demon Slayer", "slug": "demon-slayer" }
       ];
     }
     else if(category === 'nghe-thuat'){
@@ -67,7 +69,7 @@ export class ProductService {
   async getSharedSubCategory(){
     return [
       {"id": 1, "name": "Váy", "slug": "vay"},
-      {"id": 2, "name": "Áo", "slug": "quan"},
+      {"id": 2, "name": "Áo", "slug": "ao"},
       {"id": 3, "name": "Quần", "slug": "quan"},
       { "id": 4, "name": "Phụ kiện", "slug": "phu-kien" },
       { "id": 5, "name": "Giày", "slug": "giay" },
