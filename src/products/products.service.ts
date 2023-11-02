@@ -110,7 +110,7 @@ export class ProductService {
       const findProps: any = !priceRange
         ? {
             category_slug: { $in: categoryList },
-            
+            // type: { $in: typesList },
           }
         : {
             $and: [
@@ -127,7 +127,7 @@ export class ProductService {
           const findProps2: any = !subcategory
           ? {
               category_slug: { $in: categoryList },
-              
+              // type: { $in: typesList },
             }
           : {
               $and: [
