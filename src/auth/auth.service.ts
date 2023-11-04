@@ -29,8 +29,7 @@ export class AuthService {
       sub: user._id,
       roles: user.roles,
     };
-
-    return { access_token: this.jwtService.sign(payload) };
+    return { access_token: this.jwtService.sign(payload), userId: user._id };
   }
 
   async socialLogin(socialLoginDto: SocialLoginDto) {
