@@ -51,6 +51,8 @@ export class ProductService {
         },
         { id: 6, name: 'BLEACH', slug: 'bleach' },
         { id: 7, name: 'Naruto', slug: 'naruto' },
+        { id: 8, name: 'Genshin Impact', slug: 'genshin-impact' },
+        { id: 9, name: 'Demon Slayer', slug: 'demon-slayer' },
       ];
     } else if (category === 'nghe-thuat') {
       return [
