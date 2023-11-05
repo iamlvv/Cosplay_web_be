@@ -32,6 +32,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Request() req: any) {
+    console.log(req.user);
     return this.authService.login(req.user);
   }
 
@@ -46,9 +47,9 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.User, Role.Merchant)
   @Get('/me')
   me(@Request() req: any) {
+    console.log(req.body.userId);
     return this.authService.me(req.user.userId);
   }
 

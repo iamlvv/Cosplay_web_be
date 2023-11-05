@@ -17,65 +17,64 @@ export class ProductService {
 
   private readonly logger = new Logger('Product Service');
 
-  async getSubCategory(category: string){
-    if(category === 'van-hoc'){  //for old code and testing
+  async getSubCategory(category: string) {
+    if (category === 'van-hoc') {
+      //for old code and testing
       return [
-        { "id": 1, "name": "Đương Đại", "slug": "duong-dai" },
-        { "id": 2, "name": "Cổ Điển", "slug": "co-dien" },
-        { "id": 3, "name": "Nước Ngoài", "slug": "nuoc-ngoai" }
+        { id: 1, name: 'Đương Đại', slug: 'duong-dai' },
+        { id: 2, name: 'Cổ Điển', slug: 'co-dien' },
+        { id: 3, name: 'Nước Ngoài', slug: 'nuoc-ngoai' },
       ];
-    }
-    else if(category === 'le-hoi'){
+    } else if (category === 'le-hoi') {
       return [
-        { "id": 1, "name": "Halloween", "slug": "halloween" },
-        { "id": 2, "name": "Giáng sinh", "slug": "giang-sinh" },
-        { "id": 3, "name": "Tết nguyên đán", "slug": "tet-nguyen-dan" },
-        { "id": 4, "name": "Tết trung thu", "slug": "tet-trung-thu" }
+        { id: 1, name: 'Halloween', slug: 'halloween' },
+        { id: 2, name: 'Giáng sinh', slug: 'giang-sinh' },
+        { id: 3, name: 'Tết nguyên đán', slug: 'tet-nguyen-dan' },
+        { id: 4, name: 'Tết trung thu', slug: 'tet-trung-thu' },
       ];
-    }
-    else if(category === 'su-kien'){
+    } else if (category === 'su-kien') {
       return [
-        { "id": 1, "name": "Tiệc sinh nhật", "slug": "tiec-sinh-nhat" },
-        { "id": 2, "name": "Tiệc công ty", "slug": "tieu-cong-ty" },
-        { "id": 3, "name": "Hội nghị", "slug": "hoi-nghi" }
+        { id: 1, name: 'Tiệc sinh nhật', slug: 'tiec-sinh-nhat' },
+        { id: 2, name: 'Tiệc công ty', slug: 'tieu-cong-ty' },
+        { id: 3, name: 'Hội nghị', slug: 'hoi-nghi' },
       ];
-    }
-    else if(category === 'hoa-trang'){
+    } else if (category === 'hoa-trang') {
       return [
-        { "id": 1, "name": "Mushoku Tensei", "slug": "mushoku-tensei" },
-        { "id": 2, "name": "JUJUTSU KAISEN", "slug": "jujutsu-kaisen" },
-        { "id": 3, "name": "Bungo Stray Dogs", "slug": "bungo-stray-dogs" },
-        { "id": 4, "name": "Undead Murder Farce", "slug": "undead-murder-farce" },
-        { "id": 5, "name": "Sugar Apple Fairy Tale", "slug": "sugar-apple-fairy-tale" },
-        { "id": 6, "name": "BLEACH", "slug": "bleach" },
-        { "id": 7, "name": "Naruto", "slug": "naruto" }
+        { id: 1, name: 'Mushoku Tensei', slug: 'mushoku-tensei' },
+        { id: 2, name: 'JUJUTSU KAISEN', slug: 'jujutsu-kaisen' },
+        { id: 3, name: 'Bungo Stray Dogs', slug: 'bungo-stray-dogs' },
+        { id: 4, name: 'Undead Murder Farce', slug: 'undead-murder-farce' },
+        {
+          id: 5,
+          name: 'Sugar Apple Fairy Tale',
+          slug: 'sugar-apple-fairy-tale',
+        },
+        { id: 6, name: 'BLEACH', slug: 'bleach' },
+        { id: 7, name: 'Naruto', slug: 'naruto' },
+        { id: 8, name: 'Genshin Impact', slug: 'genshin-impact' },
+        { id: 9, name: 'Demon Slayer', slug: 'demon-slayer' },
       ];
-    }
-    else if(category === 'nghe-thuat'){
+    } else if (category === 'nghe-thuat') {
       return [
-        { "id": 1, "name": "Biểu diễn văn nghệ", "slug": "bieu-dien-van-nghe" },
-        { "id": 2, "name": "Chụp ảnh ngoại cảnh", "slug": "chup-anh-ngoai-canh" },
-        { "id": 3, "name": "Chụp kỷ yếu", "slug": "chup-ky-yeu" }
+        { id: 1, name: 'Biểu diễn văn nghệ', slug: 'bieu-dien-van-nghe' },
+        { id: 2, name: 'Chụp ảnh ngoại cảnh', slug: 'chup-anh-ngoai-canh' },
+        { id: 3, name: 'Chụp kỷ yếu', slug: 'chup-ky-yeu' },
       ];
-      
-    }
-    else{
-      return "Undefined Category!";
+    } else {
+      return 'Undefined Category!';
     }
   }
 
-  async getSharedSubCategory(){
+  async getSharedSubCategory() {
     return [
-      {"id": 1, "name": "Váy", "slug": "vay"},
-      {"id": 2, "name": "Áo", "slug": "ao"},
-      {"id": 3, "name": "Quần", "slug": "quan"},
-      { "id": 4, "name": "Phụ kiện", "slug": "phu-kien" },
-      { "id": 5, "name": "Giày", "slug": "giay" },
-      { "id": 6, "name": "Tóc giả", "slug": "toc-gia" },
-      { "id": 7, "name": "Combo", "slug": "combo" }
+      { id: 1, name: 'Váy', slug: 'vay' },
+      { id: 2, name: 'Áo', slug: 'ao' },
+      { id: 3, name: 'Quần', slug: 'quan' },
+      { id: 4, name: 'Phụ kiện', slug: 'phu-kien' },
+      { id: 5, name: 'Giày', slug: 'giay' },
+      { id: 6, name: 'Tóc giả', slug: 'toc-gia' },
+      { id: 7, name: 'Combo', slug: 'combo' },
     ];
-    
-    
   }
 
   async getFilteredProducts({
@@ -97,7 +96,7 @@ export class ProductService {
             _id: -1,
           };
 
-          console.log(category);
+    console.log(category);
     const categoryList = category?.split(',');
     const subcategoryList = subcategory?.split(',');
     console.log(subcategoryList);
@@ -117,12 +116,10 @@ export class ProductService {
             $and: [
               {
                 category_slug: { $in: categoryList },
-                
               },
               {
                 price: { $gte: priceRange[0], $lte: priceRange[1] },
               },
-              
             ],
           };
           const findProps2: any = !subcategory  //find based on property of subcategory
