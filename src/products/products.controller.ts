@@ -33,7 +33,7 @@ export class ProductController {
     // return `Testing on PORT:::${process.env.PORT} 🚀`;
   }
   
-  @Get('sharedSubcategories')
+  @Get('sharedSubcategories')  //this is to get the type
   async getSubcategories1(@Query('category') category: string){
     return this.productService.getSharedSubCategory();
 

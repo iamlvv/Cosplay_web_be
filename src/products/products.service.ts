@@ -67,7 +67,7 @@ export class ProductService {
   async getSharedSubCategory(){
     return [
       {"id": 1, "name": "Váy", "slug": "vay"},
-      {"id": 2, "name": "Áo", "slug": "quan"},
+      {"id": 2, "name": "Áo", "slug": "ao"},
       {"id": 3, "name": "Quần", "slug": "quan"},
       { "id": 4, "name": "Phụ kiện", "slug": "phu-kien" },
       { "id": 5, "name": "Giày", "slug": "giay" },
@@ -100,6 +100,7 @@ export class ProductService {
           console.log(category);
     const categoryList = category?.split(',');
     const subcategoryList = subcategory?.split(',');
+    console.log(subcategoryList);
     const typesList = types?.split(',');
     let priceRange = null;
     if (price && price.split(',').length === 2) {
@@ -107,7 +108,7 @@ export class ProductService {
     }
 
     if (category && !text) {
-      const findProps: any = !priceRange
+      const findProps: any = !priceRange    // find based on property of categpry_slug
         ? {
             category_slug: { $in: categoryList },
             // type: { $in: typesList },
@@ -124,7 +125,7 @@ export class ProductService {
               
             ],
           };
-          const findProps2: any = !subcategory
+          const findProps2: any = !subcategory  //find based on property of subcategory
           ? {
               category_slug: { $in: categoryList },
               // type: { $in: typesList },
@@ -136,13 +137,13 @@ export class ProductService {
                   
                 },
                 {
-                  subcategory: { $in: subcategoryList },
+                  subCategory: { $in: subcategoryList },
                 },
                 
               ],
             };
 
-            const findProps3: any = !types
+            const findProps3: any = !types         //find based on property of types
           ? {
               category_slug: { $in: categoryList },
               

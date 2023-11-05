@@ -3,6 +3,12 @@ import { HydratedDocument } from 'mongoose';
 
 export type CategoryDocument = HydratedDocument<Category>;
 
+type SubcategoryType = {
+  id: number;
+  name: string;
+  slug: string;
+}
+
 @Schema()
 export class Category {
   @Prop({ required: true })
@@ -16,7 +22,11 @@ export class Category {
 
   @Prop()
   image: string;
+
+  @Prop()
+  subCategories: SubcategoryType[];
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
 CategorySchema.index({ name: 'text', slug: 'text', details: 'text' });
+ 

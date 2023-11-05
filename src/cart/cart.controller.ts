@@ -58,7 +58,7 @@ export class CartController {
   @Patch('/')
   async removeItemFromCart(@Request() req, @Body() { productId }) {
     const userId = req.user.userId;
-    console.log('hihi');
+    // console.log('hihi');
 
     const cart = await this.cartService.removeItemFromCart(userId, productId);
     if (!cart) throw new NotFoundException('Item does not exist');

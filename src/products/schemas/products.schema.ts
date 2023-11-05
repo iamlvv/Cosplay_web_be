@@ -4,6 +4,7 @@ import { Document } from 'mongoose';
 import { Category } from '../../categories/schemas/category.schema';
 import { Shop } from '../../shops/schemas/shop.schema';
 import { Variation } from '../interfaces/variation.interface';
+import { ClothingSize } from 'src/products/enums/clothingsize.enum';
 
 export type ProductDocument = Product & Document;
 
@@ -12,14 +13,7 @@ export class Product {
   @Prop({ required: true })
   name: string;
 
-  @Prop()
-  author: string;
-
-  @Prop()
-  manufacturer: string;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Shop' })
-  shop: Shop;
+ 
 
   @Prop()
   description: string;
@@ -28,7 +22,10 @@ export class Product {
   price: number;
 
   @Prop()
-  oldPrice: number;
+  discount :number;  // discount percentage - apply for BuyingPrice only
+
+  @Prop()
+  rentPrice? :number; //per day
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Category' })
   category: Category;
@@ -37,8 +34,9 @@ export class Product {
   category_slug: string;
 
   @Prop()
-  subcategory?: string;
+  subCategory?: string;  // belong to which categories 
 
+  
   @Prop()
   type?: string;   //example "Ao", "Vay", etc   from sharedSubCategory
 
@@ -62,22 +60,17 @@ export class Product {
       },
     }),
   )
-  variations: Variation;
+  variations?: Variation;
 
-  @Prop()
-  numberOfPage: number;
-
-  @Prop()
-  manufacture_at: string;
-
-  @Prop()
-  dimension: string;
-
+  
   @Prop()
   createdAt?: Date;
 
   @Prop()
   updatedAt?: Date;
+
+  @Prop()
+  size: ClothingSize[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

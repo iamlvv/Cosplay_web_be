@@ -66,6 +66,26 @@ export class CategoriesService {
       return err;
     }
   }
+  async getSubCategory(slug: string)  { //get subcategory by category-slug
+   const categoryData =  await this.categoryModel.findOne({ slug });
+    
+   if(!categoryData){
+    return "can not find subcategory";
+   }
+   return categoryData.subCategories;
+  }
+
+  GetTypes(){
+    return [
+      {"id": 1, "name": "Váy", "slug": "vay"},
+      {"id": 2, "name": "Áo", "slug": "ao"},
+      {"id": 3, "name": "Quần", "slug": "quan"},
+      { "id": 4, "name": "Phụ kiện", "slug": "phu-kien" },
+      { "id": 5, "name": "Giày", "slug": "giay" },
+      { "id": 6, "name": "Tóc giả", "slug": "toc-gia" },
+      { "id": 7, "name": "Combo", "slug": "combo" }
+    ];
+  }
 
   async getCategoryBySlug(slug: string) {
     const category = await this.categoryModel.findOne({ slug });
