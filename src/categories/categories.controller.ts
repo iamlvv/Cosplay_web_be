@@ -21,11 +21,23 @@ export class CategoriesController {
   findAll(@Query() getCategoriesDto: GetCategoriesDto) {
     return this.categoriesService.getCategories(getCategoriesDto);
   }
+  @Get('subCategoriesof')
+  async getsubCategory(@Query('slug') slug: string){ //by slug
+
+    return this.categoriesService.getSubCategory(slug);
+  }
+
+  @Get('listofType')
+  GetTypes(){
+    return this.categoriesService.GetTypes();
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoriesService.getCategory(id);
   }
+
+
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
