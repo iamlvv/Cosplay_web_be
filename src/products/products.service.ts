@@ -97,6 +97,7 @@ export class ProductService {
           };
 
     console.log(category);
+    console.log(price);
     const categoryList = category?.split(',');
     const subcategoryList = subcategory?.split(',');
     console.log(subcategoryList);
@@ -107,7 +108,7 @@ export class ProductService {
     }
 
     if (category && !text) {
-      const findProps: any = !priceRange    // find based on property of categpry_slug
+      const findProps: any = !priceRange    // find based on property of category_slug
         ? {
             category_slug: { $in: categoryList },
             // type: { $in: typesList },
@@ -179,6 +180,47 @@ export class ProductService {
         last_page: Math.ceil(count / limit),
       };
     }
+
+
+    //for search in all category
+    if(!category && priceRange){
+      
+      const findProps: any = !text
+      ? {
+          price: { $gte: priceRange[0], $lte: priceRange[1] },
+          
+        }
+      : {
+          $and: [
+            { $text: { $search: text } },
+            {
+              price: { $gte: priceRange[0], $lte: priceRange[1] },
+            },
+            
+          ],
+        };
+      
+
+        const products = await this.productModel
+      .find(findProps)
+      .sort(sortProps)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .exec();
+    const count = await this.productModel.countDocuments(findProps);
+
+    return {
+      data: products,
+      count: products.length,
+      total: count,
+      from: (page - 1) * limit,
+      to: (page - 1) * limit + products.length,
+      per_page: +limit,
+      current_page: +page,
+      last_page: Math.ceil(count / limit),
+    };
+    }
+
 
     const findProps: any = !priceRange
       ? {
@@ -269,7 +311,7 @@ export class ProductService {
     const product = await this.productModel
       .findById(id)
       .populate('category')
-      .populate('shop');
+      // .populate('shop');
 
     return product;
   }
