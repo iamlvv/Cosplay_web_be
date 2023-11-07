@@ -126,7 +126,7 @@ export class ProductService {
           const findProps2: any = !subcategory  //find based on property of subcategory
           ? {
               category_slug: { $in: categoryList },
-              // type: { $in: typesList },
+              
             }
           : {
               $and: [
@@ -155,6 +155,12 @@ export class ProductService {
                 {
                   type: { $in: typesList },
                 },
+                subcategoryList?.length > 0?
+                {
+                  subCategory: { $in: subcategoryList }
+                }
+                :
+                {},
                 
               ],
             };
@@ -167,7 +173,7 @@ export class ProductService {
         .skip((page - 1) * limit)
         .limit(limit)
         .exec();
-      const count = await this.productModel.countDocuments(findProps);
+      const count = await this.productModel.countDocuments(findPropsCombined);
 
       return {
         data: products,
@@ -182,43 +188,79 @@ export class ProductService {
     }
 
 
-    //for search in all category
-    if(!category && priceRange){
-      
-      const findProps: any = !text
+    //for search in all category 
+    if(!category ){
+      let findProps:any;
+      if(text){
+        findProps = !priceRange
+        ? {
+            $and: [
+              
+              { $text: { $search: text } },
+            ],
+          }
+        : {
+            $and: [
+              { $text: { $search: text } },
+              {
+                price: { $gte: priceRange[0], $lte: priceRange[1] },
+              },
+            ],
+          };
+
+      }
+      else{
+        findProps = !priceRange
       ? {
-          price: { $gte: priceRange[0], $lte: priceRange[1] },
-          
+          $and: [
+            
+           
+          ],
         }
       : {
           $and: [
-            { $text: { $search: text } },
+            
             {
               price: { $gte: priceRange[0], $lte: priceRange[1] },
             },
-            
           ],
         };
+      }
       
 
+    //   const findProps1: any = !types ? 
+    //   {
+    //   }
+    // : {
+    //     $and: [
+          
+    //       {
+    //         type: { $in: typesList },
+    //       },
+          
+    //     ],
+    //   };
+      
+      // let findPropsCombined = Object.assign({}, findProps, findProps1);
         const products = await this.productModel
       .find(findProps)
       .sort(sortProps)
       .skip((page - 1) * limit)
       .limit(limit)
       .exec();
-    const count = await this.productModel.countDocuments(findProps);
+      const count = await this.productModel.countDocuments(findProps);
 
-    return {
-      data: products,
-      count: products.length,
-      total: count,
-      from: (page - 1) * limit,
-      to: (page - 1) * limit + products.length,
-      per_page: +limit,
-      current_page: +page,
-      last_page: Math.ceil(count / limit),
-    };
+      return {
+        data: products,
+        count: products.length,
+        total: count,
+        from: (page - 1) * limit,
+        to: (page - 1) * limit + products.length,
+        per_page: +limit,
+        current_page: +page,
+        last_page: Math.ceil(count / limit),
+      };
+
     }
 
 
