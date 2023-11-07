@@ -35,7 +35,7 @@ export class ProductService {
     } else if (category === 'su-kien') {
       return [
         { id: 1, name: 'Tiệc sinh nhật', slug: 'tiec-sinh-nhat' },
-        { id: 2, name: 'Tiệc công ty', slug: 'tieu-cong-ty' },
+        { id: 2, name: 'Tiệc công ty', slug: 'tiec-cong-ty' },
         { id: 3, name: 'Hội nghị', slug: 'hoi-nghi' },
       ];
     } else if (category === 'hoa-trang') {
@@ -107,7 +107,7 @@ export class ProductService {
     }
 
     if (category && !text) {
-      const findProps: any = !priceRange    // find based on property of categpry_slug
+      const findProps: any = !priceRange // find based on property of categpry_slug
         ? {
             category_slug: { $in: categoryList },
             // type: { $in: typesList },
@@ -122,42 +122,37 @@ export class ProductService {
               },
             ],
           };
-          const findProps2: any = !subcategory  //find based on property of subcategory
-          ? {
-              category_slug: { $in: categoryList },
-              // type: { $in: typesList },
-            }
-          : {
-              $and: [
-                {
-                  category_slug: { $in: categoryList },
-                  
-                },
-                {
-                  subCategory: { $in: subcategoryList },
-                },
-                
-              ],
-            };
+      const findProps2: any = !subcategory //find based on property of subcategory
+        ? {
+            category_slug: { $in: categoryList },
+            // type: { $in: typesList },
+          }
+        : {
+            $and: [
+              {
+                category_slug: { $in: categoryList },
+              },
+              {
+                subCategory: { $in: subcategoryList },
+              },
+            ],
+          };
 
-            const findProps3: any = !types         //find based on property of types
-          ? {
-              category_slug: { $in: categoryList },
-              
-            }
-          : {
-              $and: [
-                {
-                  category_slug: { $in: categoryList },
-                  
-                },
-                {
-                  type: { $in: typesList },
-                },
-                
-              ],
-            };
-      
+      const findProps3: any = !types //find based on property of types
+        ? {
+            category_slug: { $in: categoryList },
+          }
+        : {
+            $and: [
+              {
+                category_slug: { $in: categoryList },
+              },
+              {
+                type: { $in: typesList },
+              },
+            ],
+          };
+
       let findPropsCombined = Object.assign({}, findProps, findProps2);
       findPropsCombined = Object.assign({}, findPropsCombined, findProps3);
       const products = await this.productModel
@@ -266,10 +261,7 @@ export class ProductService {
   }
 
   async getProductById(id: string): Promise<Product> {
-    const product = await this.productModel
-      .findById(id)
-      .populate('category')
-      .populate('shop');
+    const product = await this.productModel.findById(id).populate('category');
 
     return product;
   }
