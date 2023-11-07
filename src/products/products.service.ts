@@ -98,10 +98,24 @@ export class ProductService {
 
     console.log(category);
     console.log(price);
+    // const categoryList = category?.split(',');
+    // const subcategoryList = subcategory?.split(',');
+    // console.log(subcategoryList);
+    // const typesList = types?.split(',');
+    // let priceRange = null;
+    // if (price && price.split(',').length === 2) {
+    //   priceRange = price.split(',').map((p) => +p * 1000);
+    // }
     const categoryList = category?.split(',');
-    const subcategoryList = subcategory?.split(',');
+    let subcategoryList = subcategory?.split(',');
     console.log(subcategoryList);
-    const typesList = types?.split(',');
+    if (subcategory === '') {
+      subcategoryList = null;
+    }
+    let typesList = types?.split(',');
+    if (types === '') {
+      typesList = null;
+    }
     let priceRange = null;
     if (price && price.split(',').length === 2) {
       priceRange = price.split(',').map((p) => +p * 1000);
@@ -109,24 +123,24 @@ export class ProductService {
 
     if (category && !text) {
       console.log(priceRange);
-      const findProps: any = !priceRange    // find based on property of category_slug
+      const findProps: any = !priceRange // find based on property of category_slug
         ? {
             $and: [
               {
                 category_slug: { $in: categoryList },
               },
-              subcategoryList?.length > 0?
-                {
-                  subCategory: { $in: subcategoryList }
-                }
-                :{},
-              typesList?.length >0?
-                {
-                  type: { $in: typesList },
-                }: {},
+              subcategoryList?.length > 0
+                ? {
+                    subCategory: { $in: subcategoryList },
+                  }
+                : {},
+              typesList?.length > 0
+                ? {
+                    type: { $in: typesList },
+                  }
+                : {},
             ],
           }
-          
         : {
             $and: [
               {
@@ -135,19 +149,19 @@ export class ProductService {
               {
                 price: { $gte: priceRange[0], $lte: priceRange[1] },
               },
-              subcategoryList?.length > 0?
-                {
-                  subCategory: { $in: subcategoryList }
-                }
-                :{},
-              typesList?.length >0?
-                {
-                  type: { $in: typesList },
-                }: {},
+              subcategoryList?.length > 0
+                ? {
+                    subCategory: { $in: subcategoryList },
+                  }
+                : {},
+              typesList?.length > 0
+                ? {
+                    type: { $in: typesList },
+                  }
+                : {},
             ],
           };
-          
-      
+
       // let findPropsCombined = Object.assign({}, findProps, findProps2);
       // findPropsCombined = Object.assign({}, findPropsCombined, findProps3);
       const products = await this.productModel
@@ -170,65 +184,61 @@ export class ProductService {
       };
     }
 
-
-    //for search in all category 
-    if(!category ){
+    //for search in all category
+    if (!category) {
       console.log(typesList);
-      let findProps:any;
-      if(text){
+      let findProps: any;
+      if (text) {
         findProps = !priceRange
-        ? {
-            $and: [
-              
-              { $text: { $search: text } },
+          ? {
+              $and: [
+                { $text: { $search: text } },
 
-              typesList?.length >0?
+                typesList?.length > 0
+                  ? {
+                      type: { $in: typesList },
+                    }
+                  : {},
+              ],
+            }
+          : {
+              $and: [
+                { $text: { $search: text } },
                 {
-                  type: { $in: typesList },
-                }: {},
-            ],
-            
-          }
-        : {
-            $and: [
-              { $text: { $search: text } },
-              {
-                price: { $gte: priceRange[0], $lte: priceRange[1] },
-              },
-              typesList?.length >0?
-                {
-                  type: { $in: typesList },
-                }: {},
-            ],
-          };
-
-      }
-      else{
+                  price: { $gte: priceRange[0], $lte: priceRange[1] },
+                },
+                typesList?.length > 0
+                  ? {
+                      type: { $in: typesList },
+                    }
+                  : {},
+              ],
+            };
+      } else {
         findProps = !priceRange
-      ? {
-          $and: [
-            typesList?.length >0?
+          ? {
+              $and: [
+                typesList?.length > 0
+                  ? {
+                      type: { $in: typesList },
+                    }
+                  : {},
+              ],
+            }
+          : {
+              $and: [
                 {
-                  type: { $in: typesList },
-                }: {},
-           
-          ],
-        }
-      : {
-          $and: [
-            
-            {
-              price: { $gte: priceRange[0], $lte: priceRange[1] },
-            },
-            typesList?.length >0?
-                {
-                  type: { $in: typesList },
-                }: {},
-          ],
-        };
+                  price: { $gte: priceRange[0], $lte: priceRange[1] },
+                },
+                typesList?.length > 0
+                  ? {
+                      type: { $in: typesList },
+                    }
+                  : {},
+              ],
+            };
       }
 
-      
       // let findPropsCombined = Object.assign({}, findProps, findProps1);
       const products = await this.productModel
         .find(findProps)
