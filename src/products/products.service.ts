@@ -108,11 +108,25 @@ export class ProductService {
     }
 
     if (category && !text) {
+      console.log(priceRange);
       const findProps: any = !priceRange    // find based on property of category_slug
         ? {
-            category_slug: { $in: categoryList },
-            // type: { $in: typesList },
+            $and: [
+              {
+                category_slug: { $in: categoryList },
+              },
+              subcategoryList?.length > 0?
+                {
+                  subCategory: { $in: subcategoryList }
+                }
+                :{},
+              typesList?.length >0?
+                {
+                  type: { $in: typesList },
+                }: {},
+            ],
           }
+          
         : {
             $and: [
               {
@@ -121,59 +135,28 @@ export class ProductService {
               {
                 price: { $gte: priceRange[0], $lte: priceRange[1] },
               },
-            ],
-          };
-          const findProps2: any = !subcategory  //find based on property of subcategory
-          ? {
-              category_slug: { $in: categoryList },
-              
-            }
-          : {
-              $and: [
-                {
-                  category_slug: { $in: categoryList },
-                  
-                },
-                {
-                  subCategory: { $in: subcategoryList },
-                },
-                
-              ],
-            };
-
-            const findProps3: any = !types         //find based on property of types
-          ? {
-              category_slug: { $in: categoryList },
-              
-            }
-          : {
-              $and: [
-                {
-                  category_slug: { $in: categoryList },
-                  
-                },
-                {
-                  type: { $in: typesList },
-                },
-                subcategoryList?.length > 0?
+              subcategoryList?.length > 0?
                 {
                   subCategory: { $in: subcategoryList }
                 }
-                :
-                {},
-                
-              ],
-            };
+                :{},
+              typesList?.length >0?
+                {
+                  type: { $in: typesList },
+                }: {},
+            ],
+          };
+          
       
-      let findPropsCombined = Object.assign({}, findProps, findProps2);
-      findPropsCombined = Object.assign({}, findPropsCombined, findProps3);
+      // let findPropsCombined = Object.assign({}, findProps, findProps2);
+      // findPropsCombined = Object.assign({}, findPropsCombined, findProps3);
       const products = await this.productModel
-        .find(findPropsCombined)
+        .find(findProps)
         .sort(sortProps)
         .skip((page - 1) * limit)
         .limit(limit)
         .exec();
-      const count = await this.productModel.countDocuments(findPropsCombined);
+      const count = await this.productModel.countDocuments(findProps);
 
       return {
         data: products,
@@ -190,6 +173,7 @@ export class ProductService {
 
     //for search in all category 
     if(!category ){
+      console.log(typesList);
       let findProps:any;
       if(text){
         findProps = !priceRange
@@ -197,7 +181,13 @@ export class ProductService {
             $and: [
               
               { $text: { $search: text } },
+
+              typesList?.length >0?
+                {
+                  type: { $in: typesList },
+                }: {},
             ],
+            
           }
         : {
             $and: [
@@ -205,6 +195,10 @@ export class ProductService {
               {
                 price: { $gte: priceRange[0], $lte: priceRange[1] },
               },
+              typesList?.length >0?
+                {
+                  type: { $in: typesList },
+                }: {},
             ],
           };
 
@@ -213,7 +207,10 @@ export class ProductService {
         findProps = !priceRange
       ? {
           $and: [
-            
+            typesList?.length >0?
+                {
+                  type: { $in: typesList },
+                }: {},
            
           ],
         }
@@ -223,23 +220,15 @@ export class ProductService {
             {
               price: { $gte: priceRange[0], $lte: priceRange[1] },
             },
+            typesList?.length >0?
+                {
+                  type: { $in: typesList },
+                }: {},
           ],
         };
       }
       
 
-    //   const findProps1: any = !types ? 
-    //   {
-    //   }
-    // : {
-    //     $and: [
-          
-    //       {
-    //         type: { $in: typesList },
-    //       },
-          
-    //     ],
-    //   };
       
       // let findPropsCombined = Object.assign({}, findProps, findProps1);
         const products = await this.productModel
