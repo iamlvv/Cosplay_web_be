@@ -35,7 +35,7 @@ export class ProductService {
     } else if (category === 'su-kien') {
       return [
         { id: 1, name: 'Tiệc sinh nhật', slug: 'tiec-sinh-nhat' },
-        { id: 2, name: 'Tiệc công ty', slug: 'tieu-cong-ty' },
+        { id: 2, name: 'Tiệc công ty', slug: 'tiec-cong-ty' },
         { id: 3, name: 'Hội nghị', slug: 'hoi-nghi' },
       ];
     } else if (category === 'hoa-trang') {
@@ -227,16 +227,15 @@ export class ProductService {
           ],
         };
       }
-      
 
       
       // let findPropsCombined = Object.assign({}, findProps, findProps1);
-        const products = await this.productModel
-      .find(findProps)
-      .sort(sortProps)
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .exec();
+      const products = await this.productModel
+        .find(findProps)
+        .sort(sortProps)
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .exec();
       const count = await this.productModel.countDocuments(findProps);
 
       return {
@@ -249,9 +248,7 @@ export class ProductService {
         current_page: +page,
         last_page: Math.ceil(count / limit),
       };
-
     }
-
 
     const findProps: any = !priceRange
       ? {
@@ -339,10 +336,7 @@ export class ProductService {
   }
 
   async getProductById(id: string): Promise<Product> {
-    const product = await this.productModel
-      .findById(id)
-      .populate('category')
-      // .populate('shop');
+    const product = await this.productModel.findById(id).populate('category');
 
     return product;
   }
