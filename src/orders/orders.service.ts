@@ -22,7 +22,7 @@ export class OrdersService {
     const embed_data = {
       redirecturl:
         process.env.ZALOPAY_REDIRECT_URL ||
-        'https://preknow.vercel.app/checkout/finish',
+        'https://costumehaven.vercel.app/checkout/finish',
     };
 
     const order: any = {
@@ -35,7 +35,7 @@ export class OrdersService {
       item: JSON.stringify(checkoutZalopayDto.items),
       embed_data: JSON.stringify(embed_data),
       amount: checkoutZalopayDto.amount,
-      description: `PreKnow - Payment for the order #${checkoutZalopayDto.transactionId}`,
+      description: `CostumeHaven - Payment for the order #${checkoutZalopayDto.transactionId}`,
       bank_code: 'zalopayapp',
     };
 
@@ -103,7 +103,6 @@ export class OrdersService {
 
   async getUserOrders(userId: string) {
     // TODO: pagination
-    
 
     const orders = await this.orderModel.find({ userId });
     return orders;
